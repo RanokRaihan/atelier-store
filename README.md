@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Atelier Store
 
-## Getting Started
+Next.js (App Router) + TypeScript + Tailwind CSS + Better Auth + Drizzle ORM + PostgreSQL.
 
-First, run the development server:
+## Setup
 
 ```bash
+npm install
+cp .env.example .env.local   # fill in DATABASE_URL and BETTER_AUTH_SECRET
+npm run auth:generate        # writes Better Auth tables to src/db/schema/auth.ts
+                             # then uncomment the re-export in src/db/schema/index.ts
+npm run db:generate && npm run db:migrate
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Better Auth validates the Drizzle schema on startup, so the auth routes stay unavailable until the auth tables are generated and migrated.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+  app/api/auth/[...all]/route.ts  Better Auth route handler
+  db/index.ts                     Drizzle client (node-postgres pool)
+  db/schema/index.ts              Drizzle schema barrel
+  lib/auth/index.ts               Better Auth server instance
+  lib/auth/client.ts              Better Auth React client
+  lib/env.ts                      Required env vars (fails fast if missing)
+drizzle.config.ts                 drizzle-kit config (migrations in ./drizzle)
+```
 
-## Learn More
+## Scripts
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Script                  | Description                              |
+| ----------------------- | ---------------------------------------- |
+| `npm run dev`           | Start the dev server                     |
+| `npm run build`         | Production build (requires env vars)     |
+| `npm run typecheck`     | Type-check with `tsc`                    |
+| `npm run lint`          | ESLint                                   |
+| `npm run auth:generate` | Generate the Better Auth Drizzle schema   |
+| `npm run db:generate`   | Generate SQL migrations from the schema   |
+| `npm run db:migrate`    | Apply migrations                         |
+| `npm run db:push`       | Push the schema directly (prototyping)   |
+| `npm run db:studio`     | Open Drizzle Studio                      |
