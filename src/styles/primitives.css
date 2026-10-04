@@ -1,0 +1,431 @@
+/*
+ * Reusable primitives, registered as Tailwind utilities so they compose
+ * with variants (`md:type-headline`, `hover:…`) and sit in the utilities
+ * layer. Base and modifier classes never set the same property — modifiers
+ * talk to the base through custom properties — so class order never matters.
+ */
+
+/* ---------- Typography presets (no color: pair with text-* tokens) ---------- */
+
+/* Large editorial statement: light weight, sentence case. */
+@utility type-display {
+  font-size: var(--text-xl);
+  line-height: var(--text-xl--line-height);
+  font-weight: 300;
+  letter-spacing: var(--tracking-tight);
+
+  @media (width >= 64rem) {
+    font-size: var(--text-2xl);
+    line-height: var(--text-2xl--line-height);
+  }
+}
+
+/* Page and section headings. */
+@utility type-headline {
+  font-size: var(--text-lg);
+  line-height: var(--text-lg--line-height);
+  font-weight: 500;
+  letter-spacing: var(--tracking-snug);
+  text-transform: uppercase;
+
+  @media (width >= 64rem) {
+    font-size: var(--text-xl);
+    line-height: var(--text-xl--line-height);
+  }
+}
+
+/* Module and card headings. */
+@utility type-title {
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+  font-weight: 600;
+  letter-spacing: var(--tracking-snug);
+  text-transform: uppercase;
+}
+
+/* Long-form copy. */
+@utility type-body-lg {
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+  font-weight: 400;
+  letter-spacing: var(--tracking-snug);
+}
+
+@utility type-body {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  font-weight: 400;
+  letter-spacing: var(--tracking-snug);
+}
+
+/* Product names, prices, filters, breadcrumbs. */
+@utility type-small {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--line-height);
+  font-weight: 400;
+  letter-spacing: var(--tracking-normal);
+}
+
+/* Buttons, nav items, eyebrows. */
+@utility type-label {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--line-height);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+/* Badges, legal copy. */
+@utility type-micro {
+  font-size: var(--text-2xs);
+  line-height: var(--text-2xs--line-height);
+  font-weight: 500;
+  letter-spacing: var(--tracking-normal);
+}
+
+@utility wordmark {
+  font-size: var(--text-lg);
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  /* Optical correction: tracking adds trailing space after the last letter. */
+  margin-inline-end: calc(-1 * var(--tracking-widest));
+
+  @media (width >= 64rem) {
+    font-size: var(--text-xl);
+  }
+}
+
+@utility price {
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+/* ---------- Containers & sections ---------- */
+
+@utility container-page {
+  width: 100%;
+  max-width: var(--container-page);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+@utility container-narrow {
+  width: 100%;
+  max-width: calc(var(--container-narrow) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+@utility container-prose {
+  width: 100%;
+  max-width: calc(var(--container-prose) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Break a child out of a container's gutter to the viewport edge. */
+@utility bleed {
+  margin-inline: calc(-1 * var(--gutter));
+}
+
+@utility section {
+  padding-block: var(--section-space);
+}
+
+/* ---------- Buttons ---------- */
+/* Usage: `btn btn-primary`, `btn btn-outline btn-sm`, `btn btn-light btn-block`. */
+
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: var(--btn-height, 3rem);
+  padding-inline: var(--btn-padding, 1.5rem);
+  width: var(--btn-width, auto);
+  border-width: 1px;
+  border-style: solid;
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--line-height);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+  user-select: none;
+  transition-property: color, background-color, border-color, opacity;
+  transition-duration: var(--default-transition-duration);
+  transition-timing-function: var(--default-transition-timing-function);
+
+  &:disabled,
+  &[aria-disabled="true"] {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+}
+
+@utility btn-sm {
+  --btn-height: 2.5rem;
+  --btn-padding: 1rem;
+}
+
+@utility btn-block {
+  --btn-width: 100%;
+}
+
+/* Solid black; inverts to outline on hover. Primary action, one per view. */
+@utility btn-primary {
+  background-color: var(--color-foreground);
+  border-color: var(--color-foreground);
+  color: var(--color-background);
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--color-background);
+      color: var(--color-foreground);
+    }
+  }
+}
+
+/* Hairline outline; fills on hover. Secondary actions. */
+@utility btn-outline {
+  background-color: transparent;
+  border-color: var(--color-border-strong);
+  color: var(--color-foreground);
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--color-foreground);
+      color: var(--color-background);
+    }
+  }
+}
+
+/* Solid white, for use on top of imagery. */
+@utility btn-light {
+  background-color: var(--color-white);
+  border-color: var(--color-white);
+  color: var(--color-black);
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: transparent;
+      color: var(--color-white);
+    }
+  }
+}
+
+/* White outline, for use on top of imagery. */
+@utility btn-outline-light {
+  background-color: transparent;
+  border-color: var(--color-white);
+  color: var(--color-white);
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--color-white);
+      color: var(--color-black);
+    }
+  }
+}
+
+/* Borderless square hit area for header icons (cart, account, search). */
+@utility btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: inherit;
+  transition-property: opacity;
+  transition-duration: var(--default-transition-duration);
+
+  @media (hover: hover) {
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+}
+
+/* ---------- Links ---------- */
+
+/* Inline / action link: always underlined, underline fades on hover. */
+@utility link {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  transition-property: text-decoration-color;
+  transition-duration: var(--default-transition-duration);
+
+  @media (hover: hover) {
+    &:hover {
+      text-decoration-color: transparent;
+    }
+  }
+}
+
+/* Quiet link: underline appears on hover only (footers, product names). */
+@utility link-quiet {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  text-decoration-color: transparent;
+  transition-property: text-decoration-color;
+  transition-duration: var(--default-transition-duration);
+
+  @media (hover: hover) {
+    &:hover {
+      text-decoration-color: currentColor;
+    }
+  }
+}
+
+/* Category / sub-nav: muted until hovered; current page is solid and bold. */
+@utility link-nav {
+  color: var(--color-muted);
+  transition-property: color;
+  transition-duration: var(--default-transition-duration);
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--color-foreground);
+    }
+  }
+
+  &[aria-current="page"],
+  &[aria-current="true"] {
+    color: var(--color-foreground);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+}
+
+/* ---------- Borders ---------- */
+
+@utility divider {
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: var(--color-border);
+}
+
+@utility divider-strong {
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: var(--color-border-strong);
+}
+
+/* ---------- Layout primitives ---------- */
+
+/* Header bar: left actions | centered wordmark | right actions. */
+@utility nav-bar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: var(--header-height);
+  padding-inline: var(--gutter);
+
+  & > :last-child {
+    justify-self: end;
+  }
+}
+
+/* Edge-to-edge product listing: 2 → 3 → 4 columns with hairline gaps. */
+@utility product-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols, 2), minmax(0, 1fr));
+  gap: 1px;
+
+  @media (width >= 48rem) {
+    --grid-cols: 3;
+  }
+
+  @media (width >= 64rem) {
+    --grid-cols: 4;
+  }
+}
+
+/* Editorial split: stacked on mobile, two equal full-bleed panels from md. */
+@utility split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+
+  @media (width >= 48rem) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Horizontally scrolling row (category chips, carousels) with no scrollbar. */
+@utility scroll-row {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  & > * {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+}
+
+/* Image frame: fills with the surface tone while loading; child media covers it. */
+@utility media {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-surface);
+
+  & > img,
+  & > video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: var(--media-fit, cover);
+  }
+}
+
+/* Product imagery sits on the surface tone and is never cropped. */
+@utility media-contain {
+  --media-fit: contain;
+}
+
+/* Full-bleed campaign hero; content anchors bottom-center. */
+@utility hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 85svh;
+  padding-block-end: var(--section-space);
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--color-white);
+  text-align: center;
+
+  @media (width >= 64rem) {
+    min-height: 100svh;
+  }
+
+  & > img,
+  & > video {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+/* Bottom-up gradient so overlaid white text stays legible on any image. */
+@utility scrim {
+  background-image: linear-gradient(to top, var(--color-scrim) 0%, transparent 50%);
+}
