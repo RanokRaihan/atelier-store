@@ -1,8 +1,29 @@
+import { BoutiqueBanner } from "@/components/home/boutique-banner";
+import { CategoryGrid } from "@/components/home/category-grid";
+import { EditorialSplit } from "@/components/home/editorial-split";
+import { FeaturedCollection } from "@/components/home/featured-collection";
+import { Hero } from "@/components/home/hero";
+import { NewArrivals } from "@/components/home/new-arrivals";
+import { Newsletter } from "@/components/home/newsletter";
+import { Services } from "@/components/home/services";
+
 export default function Home() {
   return (
-    <main className="container-page section flex flex-1 flex-col items-center justify-center gap-6 text-center">
-      <h1 className="wordmark">Atelier Store</h1>
-      <p className="type-body text-muted">Design system in place.</p>
-    </main>
+    <>
+      <Hero />
+      <section className="container-prose section text-center" aria-label="Introduction">
+        <p className="type-display">
+          Made in small runs by a single workshop: leather goods, tailoring and accessories designed to be worn for
+          decades.
+        </p>
+      </section>
+      <EditorialSplit />
+      <NewArrivals />
+      <FeaturedCollection />
+      <CategoryGrid />
+      <BoutiqueBanner />
+      <Services />
+      <Newsletter />
+    </>
   );
 }

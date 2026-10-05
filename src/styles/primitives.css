@@ -97,9 +97,9 @@
   }
 }
 
+/* Pair with a type preset, which supplies size and weight. */
 @utility price {
   font-variant-numeric: tabular-nums;
-  font-weight: 500;
 }
 
 /* ---------- Containers & sections ---------- */
