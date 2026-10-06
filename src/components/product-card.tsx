@@ -24,6 +24,7 @@ export function ProductCard({ product }: { product: Product }) {
       <div className="flex flex-col gap-1 px-3 pt-3 pb-8 md:pb-10">
         <h3 className="type-small group-hover:underline group-hover:underline-offset-4">{product.name}</h3>
         <p className="type-small price">{formatPrice(product.price)}</p>
+        {product.stock <= 0 && <p className="type-small text-muted">Sold out</p>}
       </div>
     </Link>
   );
